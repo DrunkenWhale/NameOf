@@ -1,8 +1,11 @@
-package macroImpl
+package com.nameof.macroImpl
 
-import model.MethodType
+import com.nameof.model.MethodType
 
 import scala.quoted.*
+
+
+/* -------------------------------nameOf( val )------------------------------------ */
 
 inline def nameOf[T](inline x: T): String = $ {
   nameOfImpl('x)
@@ -16,13 +19,11 @@ private def nameOfImpl[T](xExpr: Expr[T])(using quotes: Quotes, tpe: Type[T]): E
   Expr(name)
 }
 
+/* ----------------------------methodNameTypeOf( method )--------------------------------- */
 
-
-inline def methodNameTypeOf[T](inline x: T) = $ {methodNameTypeOfImpl('x)}
-
-//private inline def methodNameTypeOfMiddle[T](inline x: T): (String, Map[String, String], String) = $ {
-//  methodNameTypeOfImpl('x)
-//}
+inline def methodNameTypeOf[T](inline x: T) = $ {
+  methodNameTypeOfImpl('x)
+}
 
 private def methodNameTypeOfImpl[T](xExpr: Expr[T])(using quotes: Quotes, tpe: Type[T]): Expr[(String, Map[String, String], String)] = {
   import quotes.reflect.*
@@ -48,3 +49,17 @@ private def methodNameTypeOfImpl[T](xExpr: Expr[T])(using quotes: Quotes, tpe: T
   Expr(methodName, map, returnType.head)
 }
 
+/* -------------------------------className[]--------------------------------------- */
+
+inline def className[T]: String = $ {
+  classNameImpl[T]
+}
+
+private def classNameImpl[T](using quotes: Quotes, tpe: Type[T]): Expr[String] = {
+  import quotes.reflect.*
+  Expr(TypeTree.of[T].symbol.name)
+}
+
+//inline def className[T](x:T): Unit ={
+//
+//}

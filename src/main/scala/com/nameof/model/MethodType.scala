@@ -1,4 +1,4 @@
-package model
+package com.nameof.model
 
 final case class MethodType(methodName: String, parameterNameToTypeList: Map[String, String], returnType: String)
 
